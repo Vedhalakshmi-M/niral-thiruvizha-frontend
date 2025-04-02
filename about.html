@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Farming Assistant</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1 class="animated-title">🌱 AI-Powered Farming Assistant 🚜</h1>
+    </header>
+
+    <div class="container">
+        <h2>Welcome to Smart Farming</h2>
+        <p>Our AI-powered system helps farmers analyze soil health, predict nitrogen levels, and get accurate fertilizer recommendations. Join us today!</p>
+
+        <div id="form-container">
+            <h3>Login</h3>
+            <input type="text" id="name" placeholder="Enter Your Name" required>
+            <input type="password" id="password" placeholder="Enter Password" required>
+            <button onclick="login()">Login</button>
+            <p>Don't have an account? <a href="#" onclick="showRegister()">Register</a></p>
+        </div>
+
+        <div id="register-container" style="display: none;">
+            <h3>Register</h3>
+            <input type="text" id="reg-name" placeholder="Enter Your Name" required>
+            <input type="password" id="reg-password" placeholder="Set a Password" required>
+            <button onclick="register()">Register</button>
+            <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+        </div>
+    </div>
+
+    <script>
+        function showRegister() {
+            document.getElementById("form-container").style.display = "none";
+            document.getElementById("register-container").style.display = "block";
+        }
+
+        function showLogin() {
+            document.getElementById("register-container").style.display = "none";
+            document.getElementById("form-container").style.display = "block";
+        }
+
+        async function register() {
+            const name = document.getElementById("reg-name").value;
+            const password = document.getElementById("reg-password").value;
+
+            const response = await fetch("http://127.0.0.1:5000/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, password })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            if (result.success) showLogin();
+        }
+
+        async function login() {
+            const name = document.getElementById("name").value;
+            const password = document.getElementById("password").value;
+
+            const response = await fetch("http://127.0.0.1:5000/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, password })
+            });
+
+            const result = await response.json();
+            alert(result.message);
+            if (result.success) {
+                window.location.href = "index.html";  // Redirect to main page
+            }
+        }
+    </script>
+
+</body>
+</html>
