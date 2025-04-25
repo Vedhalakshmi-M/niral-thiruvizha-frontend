@@ -3,577 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leaf Nitrogen & Soil Predictor</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-
-body {
-    font-family: 'Poppins', sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(to bottom, #dff6dd, #a0e3a0);
-    color: #2c3e50;
-}
-
-.container {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    width: 50%;
-    margin: auto;
-    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    transition: 0.3s;
-}
-
-.container:hover {
-    transform: scale(1.02);
-}
-
-button {
-    padding: 12px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background 0.3s, transform 0.2s;
-}
-
-button:hover {
-    background-color: #218838;
-    transform: scale(1.05);
-}
-
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-input[type="text"], input[type="file"] {
-    padding: 12px;
-    width: 80%;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-}
-
-input[type="text"]:focus {
-    border-color: #28a745;
-    outline: none;
-}
-
-#imagePreview {
-    max-width: 300px;
-    margin-top: 20px;
-    display: none;
-    border: 1px solid #ddd;
-    padding: 5px;
-    border-radius: 8px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.info-box {
-    text-align: left;
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    border-left: 5px solid #28a745;
-    font-size: 16px;
-    transition: 0.3s;
-}
-
-.info-box:hover {
-    background-color: #eaf9e5;
-}
-
-h2 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #155724;
-}
-
-    </style>
+    <title>AI-Powered Farming Assistant</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h2 id="title-header">🌱 Intelligent Farming : AI-Based Soil & Leaf Nutrient Prediction System 🌍</h2>
+    <header>
+        <h1 class="animated-title">🌱 AI-Powered Farming Assistant 🚜</h1>
+    </header>
 
-    <!-- 🌍 Language Selector -->
-    <label for="language" id="lang-label">🌍 Choose Language:</label>
-    <select id="language" onchange="changeLanguage()">
-        <option value="en">English</option>
-        <option value="ta">தமிழ் (Tamil)</option>
-        <option value="hi">हिन्दी (Hindi)</option>
-    </select>
-    <br><br>
-
-    <!-- 📸 Leaf Image Upload -->
     <div class="container">
-        <h3 id="upload-title">📸 Upload Leaf Image for Nitrogen Level Prediction</h3>
-        <input type="file" id="fileInput" accept="image/*">
-        <br><br>
-        <img id="imagePreview" src="" alt="Uploaded Image">
-        <br>
-        <button onclick="uploadImage()" disabled id="predictBtn">Predict Nitrogen Level</button>
-        <h3 id="predictionResult"></h3>
-        <div class="info-box" id="nitrogenSolution" style="display:none;"></div>
-        <button onclick="startPredictVoice()" id="voice-predict-btn">🎙️ Voice: Predict Nitrogen</button>
-        <button onclick="speakNitrogenSolution()" id="voice-nitrogen-btn">🎙️ Speak Solution</button>
-    </div>
-    </div>
+        <h2>Welcome to Smart Farming</h2>
+        <p>Our AI-powered system helps farmers analyze soil health, predict nitrogen levels, and get accurate fertilizer recommendations. Join us today!</p>
 
-    <br>
+        <div id="form-container">
+            <h3>Login</h3>
+            <input type="text" id="name" placeholder="Enter Your Name" required>
+            <input type="password" id="password" placeholder="Enter Password" required>
+            <button onclick="login()">Login</button>
+            <p>Don't have an account? <a href="#" onclick="showRegister()">Register</a></p>
+        </div>
 
-    <!-- 🌤 Weather, Soil & Fertilization -->
-    <div class="container">
-        <h3 id="weather-title">🌤 Get Weather & Soil Information</h3>
-        <input type="text" id="cityInput" placeholder="Enter City Name">
-        <button onclick="fetchData()" id="get-data-btn">Get Data</button>
-        <button onclick="startCityVoiceRecognition()" id="voice-city-btn">🎙️ Speak City Name</button>
-        <div class="info-box">
-            <h4 id="weather-header">Weather Data:</h4>
-            <p id="weather">Enter a city to get weather data.</p>
-            <h4 id="soil-header">Soil Data:</h4>
-            <p id="soil">Enter a city to get soil data.</p>
-            <h4 id="fertilizer-header">Fertilizer Recommendations:</h4>
-            <p id="fertilizer">Enter a city to get fertilizer recommendations.</p>
-            <button onclick="speakFertilizer()" id="voice-fertilizer-btn">🎙️ Speak Fertilizer Recommendations</button>
+        <div id="register-container" style="display: none;">
+            <h3>Register</h3>
+            <input type="text" id="reg-name" placeholder="Enter Your Name" required>
+            <input type="password" id="reg-password" placeholder="Set a Password" required>
+            <button onclick="register()">Register</button>
+            <p>Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
         </div>
-        <h3>🔄 Past Searches</h3>
-        <div id="pastSearches" class="info-box">
-            <p>Loading past searches...</p>
-        </div>
-        </div>
-        <button onclick="downloadReport()" id="download-btn">📄 Download Report</button>
     </div>
 
     <script>
-        const fileInput = document.getElementById("fileInput");
-        const imagePreview = document.getElementById("imagePreview");
-        const predictBtn = document.getElementById("predictBtn");
+        function showRegister() {
+            document.getElementById("form-container").style.display = "none";
+            document.getElementById("register-container").style.display = "block";
+        }
 
-        fileInput.addEventListener("change", function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    imagePreview.src = e.target.result;
-                    imagePreview.style.display = "block";
-                    predictBtn.disabled = false;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
+        function showLogin() {
+            document.getElementById("register-container").style.display = "none";
+            document.getElementById("form-container").style.display = "block";
+        }
 
-        function uploadImage() {
-            const file = fileInput.files[0];
-            if (!file) {
-                alert("Please select an image first!");
-                return;
-            }
+        async function register() {
+            const name = document.getElementById("reg-name").value;
+            const password = document.getElementById("reg-password").value;
 
-            const formData = new FormData();
-            formData.append("file", file);
-
-            fetch("http://127.0.0.1:5000/predict", {
+            const response = await fetch("http://127.0.0.1:5000/register", {
                 method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("predictionResult").innerHTML = 
-                    `Predicted Class: <strong>${data.predicted_class}</strong> <br> Confidence: <strong>${data.confidence.toFixed(2)}%</strong>`;
-                showNitrogenSolution(data.predicted_class);
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("❌ Failed to get prediction. Make sure the Flask server is running!");
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, password })
             });
+
+            const result = await response.json();
+            alert(result.message);
+            if (result.success) showLogin();
         }
 
-        function fetchData() {
-    const city = document.getElementById("cityInput").value;
-    const lang = document.getElementById("language").value;
-    fetch("http://127.0.0.1:5000/get_data", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ city: city, lang: lang })  
-})
-.then(response => response.json())
-.then(data => {
-    console.log("🟢 Received Data:", data);  // ✅ Debugging: Log API response
+        async function login() {
+            const name = document.getElementById("name").value;
+            const password = document.getElementById("password").value;
 
-    // ✅ Weather Data
-    if (data.weather && data.weather.titles) {
-            document.getElementById("weather").innerHTML = `
-                <strong>${data.weather.titles.temperature}:</strong> ${data.weather.temperature}°C <br>
-                <strong>${data.weather.titles.humidity}:</strong> ${data.weather.humidity}% <br>
-                <strong>${data.weather.titles.condition}:</strong> ${data.weather.condition}
-            `;
-        } else {
-            document.getElementById("weather").innerHTML = "❌ Weather Data Not Available!";
-        }
+            const response = await fetch("http://127.0.0.1:5000/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, password })
+            });
 
-    // ✅ Fix for Soil Data
-    if (data.soil && data.soil.soil_data) {  
-        let soilInfo = data.soil.soil_data;
-        document.getElementById("soil").innerHTML = `
-            <strong>${data.soil.titles.soil_type}:</strong> ${soilInfo["Soil Type"]} <br>
-            <strong>${data.soil.titles.pH}:</strong> ${soilInfo["pH"]} <br>
-            <strong>${data.soil.titles.nutrients}:</strong><br>
-            - <strong>${data.soil.titles.nitrogen}:</strong> ${soilInfo["Nitrogen"]} <br>
-            - <strong>${data.soil.titles.phosphorus}:</strong> ${soilInfo["Phosphorus"]} <br>
-            - <strong>${data.soil.titles.potassium}:</strong> ${soilInfo["Potassium"]}
-        `;
-    } else {
-        document.getElementById("soil").innerHTML = "❌ No Soil Data Found!";
-    }
-
-    // ✅ Fertilizer Recommendations
-    if (data.soil && data.soil.fertilizer_recommendations.length > 0) {
-        document.getElementById("fertilizer").innerHTML = `
-            <strong>${data.soil.titles.fertilizer_recommendations}:</strong> <br>
-            ${data.soil.fertilizer_recommendations.join(", ")}
-        `;
-    }
-})
-.catch(error => {
-    console.error("❌ Error fetching data:", error);
-    alert("Failed to fetch data. Check console for errors.");
-});
-
-
-}
-
-        function speakNitrogenSolution() {
-            let lang = document.getElementById("language").value;
-            let solutionText = document.getElementById("nitrogenSolution").innerText;
-            speakText(solutionText, lang);
-        }
-
-        function speakFertilizer() {
-            let lang = document.getElementById("language").value;
-            let fertilizerText = document.getElementById("fertilizer").innerText;
-            speakText(fertilizerText, lang);
-        }
-
-        function startPredictVoice() {
-            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.lang = "en-US";
-            recognition.start();
-
-            recognition.onresult = function(event) {
-                const command = event.results[0][0].transcript.toLowerCase();
-                if (command.includes("predict nitrogen")) {
-                    uploadImage();
-                }
-            };
-        }
-
-        function startCityVoiceRecognition() {
-            let lang = document.getElementById("language").value;
-            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            
-            if (lang === "ta") {
-                recognition.lang = "ta-IN"; // Tamil
-            } else if (lang === "hi") {
-                recognition.lang = "hi-IN"; // Hindi
-            } else {
-                recognition.lang = "en-US"; // English
+            const result = await response.json();
+            alert(result.message);
+            if (result.success) {
+                window.location.href = "home.html";  // Redirect to main page
             }
-
-            recognition.start();
-
-            recognition.onresult = function(event) {
-                const cityName = event.results[0][0].transcript;
-                document.getElementById("cityInput").value = cityName;
-                fetchData();
-            };
         }
-       /* function speakText(text, lang) {
-            const synth = window.speechSynthesis;
-            const utterance = new SpeechSynthesisUtterance(text);
-            const voices = synth.getVoices();
-
-            if (lang === "ta") {
-            utterance.lang = "ta-IN"; // Tamil
-            utterance.voice = voices.find(voice => voice.lang === "ta-IN") || voices[0];
-        } else if (lang === "hi") {
-            utterance.lang = "hi-IN"; // Hindi
-            utterance.voice = voices.find(voice => voice.lang === "hi-IN") || voices[0];
-        } else {
-            utterance.lang = "en-US"; // Default English
-            utterance.voice = voices.find(voice => voice.lang === "en-US") || voices[0];
-        }
-
-        synth.speak(utterance);
-    }*/
-    function speakText(text, lang) {
-    let languageCode = lang; // Default to provided language code
-
-    // Convert Tamil & Hindi to Google TTS-supported language codes
-    if (lang === "ta") {
-        languageCode = "ta"; // Tamil
-    } else if (lang === "hi") {
-        languageCode = "hi"; // Hindi
-    } else {
-        languageCode = "en"; // English
-    }
-
-    let googleTTSUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${languageCode}&client=tw-ob&q=${encodeURIComponent(text)}`;
-    
-    let audio = new Audio(googleTTSUrl);
-    audio.play();
-}
-async function downloadReport() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    // Load custom Tamil and Hindi fonts
-    const tamilFont = await fetch("https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts/unhinted/NotoSansTamil-Regular.ttf").then(res => res.arrayBuffer());
-    const hindiFont = await fetch("https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts/unhinted/NotoSansDevanagari-Regular.ttf").then(res => res.arrayBuffer());
-
-    // Add fonts to jsPDF
-    doc.addFileToVFS("NotoSansTamil.ttf", tamilFont);
-    doc.addFont("NotoSansTamil.ttf", "NotoSansTamil", "normal");
-
-    doc.addFileToVFS("NotoSansDevanagari.ttf", hindiFont);
-    doc.addFont("NotoSansDevanagari.ttf", "NotoSansDevanagari", "normal");
-
-    // Get the selected language
-    let lang = document.getElementById("language").value;
-    
-    if (lang === "ta") {
-        doc.setFont("NotoSansTamil");
-    } else if (lang === "hi") {
-        doc.setFont("NotoSansDevanagari");
-    } else {
-        doc.setFont("helvetica"); // Default font for English
-    }
-
-    // Set Font Size
-    doc.setFontSize(18);
-    doc.text("🌱 Leaf Nitrogen & Soil Report", 20, 20);
-
-    // 📸 Nitrogen Prediction
-    const predictionResult = document.getElementById("predictionResult").innerText;
-    doc.setFontSize(14);
-    doc.text("📸 Nitrogen Prediction:", 20, 40);
-    doc.setFontSize(12);
-    doc.text(predictionResult || "No prediction available", 20, 50, { maxWidth: 170 });
-
-    // 🌤 Weather Data
-    const weatherData = document.getElementById("weather").innerText;
-    doc.setFontSize(14);
-    doc.text("🌤 Weather Data:", 20, 70);
-    doc.setFontSize(12);
-    doc.text(weatherData || "No weather data available", 20, 80, { maxWidth: 170 });
-
-    // 🌱 Soil Data
-    const soilData = document.getElementById("soil").innerText;
-    doc.setFontSize(14);
-    doc.text("🌱 Soil Data:", 20, 100);
-    doc.setFontSize(12);
-    doc.text(soilData || "No soil data available", 20, 110, { maxWidth: 170 });
-
-    // 🌾 Fertilizer Recommendations
-    const fertilizerData = document.getElementById("fertilizer").innerText;
-    doc.setFontSize(14);
-    doc.text("🌾 Fertilizer Recommendations:", 20, 130);
-    doc.setFontSize(12);
-    doc.text(fertilizerData || "No recommendations available", 20, 140, { maxWidth: 170 });
-
-    // Save PDF
-    doc.save("Leaf_Nitrogen_Soil_Report.pdf");
-}
-
-
-
-
-
-    function showNitrogenSolution(level) {
-        let lang = document.getElementById("language").value;
-        let translation = translations[lang];
-
-        document.getElementById("nitrogenSolution").innerHTML = `
-            <strong>${translation["solution-title"]}:</strong> ${translation["nitrogenSolutions"][level] || translation["no_recommendation"]}
-        `;
-        document.getElementById("nitrogenSolution").style.display = "block";
-    }
-        const translations = {
-            en: {
-                "title-header": "🌱 Intelligent Farming : AI-Based Soil & Leaf Nutrient Prediction System",
-                "lang-label": "🌍 Choose Language:",
-                "upload-title": "📸 Upload Leaf Image for Nitrogen Level Prediction",
-                "predictBtn": "Predict Nitrogen Level",
-                "weather-title": "🌤 Get Weather & Soil Information",
-                "get-data-btn": "Get Data",
-                "weather-header": "Weather Data:",
-                "soil-header": "Soil Data:",
-                "fertilizer-header": "Fertilizer Recommendations:",
-                "download-btn": "📄 Download Report",
-                "voice-predict-btn": "🎙️ Voice: Predict Nitrogen",
-                "voice-nitrogen-btn": "🎙️ Speak Solution",
-                "voice-city-btn": "🎙️ Speak City Name",
-                "voice-fertilizer-btn": "🎙️ Speak Fertilizer Recommendations",
-                "fileInput": "Choose file",
-                "cityInput": "Enter city name",
-                "weather": "Enter city name to get weather data",
-                "soil": "Enter city name to get soil data", 
-                "fertilizer": "Enter city name to get fertilizer recommendations",
-                "solution-title": "Solution",
-                "pdf_filename": "Leaf_Nitrogen_Soil_Report.pdf",
-                "no_prediction": "No prediction available",
-                "no_weather": "No weather data available",
-                "no_soil": "No soil data available",
-                "no_fertilizer": "No recommendations available",
-                "no_recommendation": "No recommendation available",
-                "nitrogenSolutions": {
-                    "Low_Nitrogen": "Apply Urea or Organic Manure. Water properly to avoid nutrient loss.",
-                    "Medium_Nitrogen": "Maintain current levels. Use balanced compost.",
-                    "Medium_High_Nitrogen": "Balance nitrogen with phosphorus-based fertilizers like DAP.",
-                    "High_Nitrogen": "Reduce nitrogen fertilizers. Apply potassium sulfate for better plant balance."
-                }
-            },
-            ta: {
-                "title-header": "🌱 இலை நைட்ரஜன் & மண் கணிப்பாளர் 🌍",
-                "lang-label": "🌍 மொழியை தேர்வுசெய்க:",
-                "upload-title": "📸 இலை படத்தை பதிவேற்றவும் நைட்ரஜன் நிலையை கணிக்க",
-                "predictBtn": "நைட்ரஜன் கணிக்க",
-                "weather-title": "🌤 காலநிலை மற்றும் மண் தகவல்",
-                "get-data-btn": "தரவைப் பெறவும்",
-                "weather-header": "காலநிலை தகவல்:",
-                "soil-header": "மண் தகவல்:",
-                "fertilizer-header": "உர பரிந்துரைகள்:",
-                "download-btn": "📄 அறிக்கையைப் பதிவிறக்கவும்",
-                "voice-predict-btn": "🎙️ குரல்: நைட்ரஜன் கணிக்க",
-                "voice-nitrogen-btn": "🎙️ தீர்வை படிக்கவும்",
-                "voice-city-btn": "🎙️ நகரத்தின் பெயரை பேசவும்",
-                "voice-fertilizer-btn": "🎙️ உர பரிந்துரைகளை கூறவும்",
-                "fileInput": "கோப்பை தேர்வு செய்யவும்",
-                "cityInput": "நகரத்தின் பெயரை உள்ளிடவும்",
-                "weather": "காலநிலை தரவுகளை பெற நகரத்தின் பெயரை உள்ளிடவும்",
-                "soil": "மண் தரவுகளை பெற நகரத்தின் பெயரை உள்ளிடவும்",  // ✅ New
-                "fertilizer": "உர பரிந்துரைகளை பெற நகரத்தின் பெயரை உள்ளிடவும்",
-                "solution-title": "தீர்வு",
-                "pdf_filename": "இலை_நைட்ரஜன்_மண்_அறிக்கை.pdf",
-                "no_prediction": "தகவல் இல்லை",
-                "no_weather": "காலநிலை தகவல் இல்லை",
-                "no_soil": "மண் தகவல் இல்லை",
-                "no_fertilizer": "உர பரிந்துரைகள் இல்லை",
-                 "no_recommendation": "பரிந்துரை இல்லை",
-                "nitrogenSolutions": {
-                    "Low_Nitrogen": "யூரியா அல்லது கரிம உரம் பயன்படுத்தவும்.",
-                    "Medium_Nitrogen": "தற்போதைய அளவைப் பாதுகாக்கவும்.",
-                    "Medium_High_Nitrogen": "DAP போன்ற பாஸ்பரஸ் உரங்களை பயன்படுத்தவும்.",
-                    "High_Nitrogen": "நைட்ரஜன் உரங்களை குறைக்கவும்."
-                }
-            },
-            hi: {
-                "title-header": "🌱 पत्ते नाइट्रोजन और मिट्टी भविष्यवक्ता 🌍",
-                "lang-label": "🌍 भाषा चुनें:",
-                "upload-title": "📸 पत्ते की छवि अपलोड करें",
-                "predictBtn": "नाइट्रोजन की भविष्यवाणी करें",
-                "weather-title": "🌤 मौसम और मिट्टी की जानकारी प्राप्त करें",
-                "get-data-btn": "डेटा प्राप्त करें",
-                "weather-header": "मौसम डेटा:",
-                "soil-header": "मिट्टी डेटा:",
-                "fertilizer-header": "उर्वरक सिफारिशें:",
-                "download-btn": "📄 रिपोर्ट डाउनलोड करें",
-                "voice-predict-btn": "🎙️ आवाज़: नाइट्रोजन की भविष्यवाणी करें",
-                "voice-nitrogen-btn": "🎙️ समाधान सुनें",
-                "voice-city-btn": "🎙️ शहर का नाम बोलें",
-                "voice-fertilizer-btn": "🎙️ उर्वरक सिफारिशें सुनें",
-                "fileInput": "फ़ाइल चुनें",
-                "cityInput": "शहर का नाम दर्ज करें",
-                "weather": "मौसम डेटा प्राप्त करने के लिए शहर का नाम दर्ज करें",
-                "soil": "मिट्टी डेटा प्राप्त करने के लिए शहर का नाम दर्ज करें",  // ✅ New
-                "fertilizer": "उर्वरक सिफारिशें प्राप्त करने के लिए शहर का नाम दर्ज करें" ,
-                "solution-title": "समाधान",
-                "pdf_filename": "पत्ता_नाइट्रोजन_मिट्टी_रिपोर्ट.pdf",
-                "no_prediction": "कोई भविष्यवाणी उपलब्ध नहीं",
-                "no_weather": "कोई मौसम डेटा उपलब्ध नहीं",
-                "no_soil": "कोई मिट्टी डेटा उपलब्ध नहीं",
-                "no_fertilizer": "कोई उर्वरक सिफारिशें नहीं",
-                "no_recommendation": "कोई सिफारिश उपलब्ध नहीं",
-                "nitrogenSolutions": {
-                    "Low_Nitrogen": "यूरिया या जैविक खाद का उपयोग करें।",
-                    "Medium_Nitrogen": "मौजूदा स्तर बनाए रखें।",
-                    "Medium_High_Nitrogen": "डीएपी जैसे फास्फोरस उर्वरकों का उपयोग करें।",
-                    "High_Nitrogen": "नाइट्रोजन उर्वरकों को कम करें।"
-                }
-            }
-        };
-
-        function changeLanguage() {
-            let lang = document.getElementById("language").value;
-            for (let key in translations[lang]) {
-                if (document.getElementById(key)) {
-                    document.getElementById(key).innerText = translations[lang][key];
-                }
-            }
-            document.getElementById("fileInput").setAttribute("title", translations[lang]["fileInput"]);
-            document.getElementById("cityInput").setAttribute("placeholder", translations[lang]["cityInput"]);
-            if (document.getElementById("cityInput").value) {
-              fetchData();  // ✅ Re-fetch data to update weather section
-    }
-    }
-    document.addEventListener("DOMContentLoaded", changeLanguage);
-
-        
-
-        //document.getElementById("title-header").innerText = translations[lang]["title-header"];
-            //document.getElementById("lang-label").innerText = translations[lang]["lang-label"];
-            //document.getElementById("upload-title").innerText = translations[lang]["upload-title"];
-            //document.getElementById("predictBtn").innerText = translations[lang]["predictBtn"];
-            //document.getElementById("weather-title").innerText = translations[lang]["weather-title"];
-            //document.getElementById("get-data-btn").innerText = translations[lang]["get-data-btn"];
-            //document.getElementById("weather-header").innerText = translations[lang]["weather-header"];
-            //document.getElementById("soil-header").innerText = translations[lang]["soil-header"];
-            //document.getElementById("fertilizer-header").innerText = translations[lang]["fertilizer-header"];
-            //document.getElementById("download-btn").innerText = translations[lang]["download-btn"];
-            window.speechSynthesis.onvoiceschanged = function () {
-        console.log("Voices loaded:", speechSynthesis.getVoices());
-    };
-
-    function fetchPastSearches() {
-    fetch("http://127.0.0.1:5000/get_past_searches")
-    .then(response => response.json())
-    .then(data => {
-        let pastSearchesContainer = document.getElementById("pastSearches");
-        pastSearchesContainer.innerHTML = "<h4>Past Searches:</h4>";
-
-        if (data.past_searches.length === 0) {
-            pastSearchesContainer.innerHTML += "<p>No past searches found.</p>";
-            return;
-        }
-
-        data.past_searches.forEach(search => {
-            let searchEntry = `<div class="search-entry">
-                <strong>City:</strong> ${search.city} <br>
-                <strong>Date:</strong> ${new Date(search.timestamp).toLocaleString()} <br>
-                <strong>Temperature:</strong> ${search.weather.temperature}°C <br>
-                <strong>Soil Type:</strong> ${search.soil.soil_data["Soil Type"]} <br>
-                <hr>
-            </div>`;
-            pastSearchesContainer.innerHTML += searchEntry;
-        });
-    })
-    .catch(error => console.error("Error fetching past searches:", error));
-}
-
-// Fetch past searches when page loads
-document.addEventListener("DOMContentLoaded", fetchPastSearches);
-
-
     </script>
 
 </body>
